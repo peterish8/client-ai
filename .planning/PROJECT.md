@@ -52,11 +52,15 @@ Every one of the 5 showcases must load a real MediaPipe model in-browser and pro
 
 ## Constraints
 
-- **Tech stack**: Vite, vanilla JS (no framework), Tailwind CSS via proper PostCSS build (not the CDN play-script used in the earlier prototype) — user explicitly asked for "a proper vite website"
+- **Tech stack**: Vite, vanilla JS (no framework — but use `jsconfig.json` + `checkJs` against MediaPipe's shipped `.d.ts` files for type-checking without converting to real `.ts`, per stack research), Tailwind **v4** via `@tailwindcss/vite` (not v3/autoprefixer, not the CDN play-script used in the earlier prototype) — user explicitly asked for "a proper vite website"
 - **Architecture**: Multi-page app (one HTML entry point per demo) rather than an SPA — each demo loads its own heavy WASM/ML runtime; keeping them as separate pages avoids loading all 5 model runtimes at once and mirrors how Google's own official samples repo is structured
 - **Zero server**: no backend of any kind; model files are fetched directly from their public CDN/HF URLs at runtime and cached client-side (Cache API), same pattern proven in the LiteRT-LM prototype
+- **Self-host MediaPipe WASM, don't CDN-load it**: research corrected the original ground truth — Google's own current `mediapipe-samples-web` repo copies `node_modules/@mediapipe/*/wasm` into `public/wasm/` via a `copy-wasm.js` prebuild script and serves it same-origin. Vite config also needs `worker: { format: 'es' }` and `optimizeDeps: { exclude: ['@mediapipe/tasks-vision', '@mediapipe/tasks-genai'] }` to avoid dev-mode esbuild pre-bundling breaking wasm/worker loading
+- **MediaPipe GenAI (`LlmInference`) has NO WASM/CPU fallback** — unlike the 4 vision demos, it hard-requires WebGPU with no documented delegate alternative. The Chat demo needs its own stricter capability-check path (block/explain clearly if WebGPU is unavailable) rather than reusing the vision demos' "WebGPU optional, WASM fallback" badge logic
 - **No external asset files for AR content**: face filter overlays (glasses, hats, etc.) must be drawn procedurally with canvas primitives, not sourced image/PNG stickers — avoids asset licensing and keeps the repo self-contained
-- **Browser APIs relied on**: `getUserMedia` (camera+mic), `MediaRecorder`, `canvas.captureStream()`, Web Audio API, Cache API, WebGPU (optional, with WASM/XNNPACK fallback) — every demo needs a real permission/error boundary for when these are denied or unsupported
+- **Browser APIs relied on**: `getUserMedia` (camera+mic), `MediaRecorder` (+ `fix-webm-duration` — Chromium's webm output reliably lacks duration metadata, near-mandatory small dependency for all 3 recording demos), `canvas.captureStream()`, Web Audio API, Cache API, WebGPU (optional w/ WASM/XNNPACK fallback for the 4 vision demos; **mandatory, no fallback**, for the Chat demo) — every demo needs a real permission/error boundary for when these are denied or unsupported
+- **Detection loop timestamps**: `detectForVideo()`/`segmentForVideo()` require a monotonically-increasing timestamp per task instance — must use a running counter or `performance.now()`, never `Date.now()` or a value that can repeat/go backwards; violating this throws an unrecoverable error requiring the task instance to be destroyed and recreated
+- **Hosting target undecided**: GitHub Pages cannot set custom response headers, so COOP/COEP (and the faster SharedArrayBuffer-based WASM variant) aren't available there without a client-side polyfill (`coi-serviceworker`); Netlify/Vercel/Cloudflare Pages support headers natively. Needs a decision before/during the shared-infrastructure phase
 
 ## Key Decisions
 
@@ -70,6 +74,9 @@ Every one of the 5 showcases must load a real MediaPipe model in-browser and pro
 | Violin/other instrument voices are tuned synth patches, not sampled audio | No royalty-free sample source lined up; synth approximation is honest and immediate | — Pending |
 | Planning-first workflow via GSD (this document + research + requirements + roadmap + PRD/UI-SPEC/FLOW/TODO docs) before any code | User explicitly wants to review all planning docs before implementation starts | — Pending |
 | Git repo initialized fresh, remote set to `github.com/peterish8/client-ai` (not yet pushed) | User created an empty GitHub repo and asked for it to be wired up alongside planning setup | ✓ Good |
+| Self-host MediaPipe WASM via `copy-wasm.js` instead of CDN-loading | Google's own current official samples repo does this; pairs with COOP/COEP for the faster SIMD+threaded WASM variant | ✓ Good — corrects earlier CDN assumption from the LiteRT-LM prototype phase |
+| Chat demo gets its own stricter WebGPU-only capability check, separate from the vision demos' WASM-fallback badge | `LlmInference` has no documented CPU/WASM delegate at all — confirmed via pitfalls research | ✓ Good — this was previously assumed to follow the same fallback pattern as the vision demos, which was wrong |
+| Re-verify MediaPipe GenAI's status at the start of the Chat demo phase, not just trust this session's research | Google's own docs currently show a maintenance-only banner recommending LiteRT-LM migration — the ecosystem here moves fast enough that a second check-in is warranted | — Pending |
 
 ## Evolution
 
