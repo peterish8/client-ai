@@ -1,5 +1,6 @@
 node_modules/
 dist/
-.gstack/
-*.log
+.env*
+!.env.example
 .DS_Store
+coverage/
