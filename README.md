@@ -1,67 +1,91 @@
 # MediaPipe Playground
 
-A single website hosting five creative, on-device AI demos — each one running Google's MediaPipe entirely inside your browser. No backend, no API keys, no accounts, no telemetry. Every demo ends with something real you can download: a recording, an image, or an audio file.
+Five creative, on-device AI demos in one multi-page Vite website. Every showcase runs in the visitor's browser with Google MediaPipe—no application backend, API key, account, telemetry, or server upload—and every demo produces something the visitor can keep.
 
-> **Status:** Planning complete, implementation not yet started. See [Project Status](#project-status) below.
+> **Status:** v1 implementation is complete on `main`. Automated source checks and unit tests are included. Final hardware QA still requires a real Chromium browser with camera, microphone, and WebGPU access.
 
 ## The 5 Showcases
 
-| Demo | What it does | MediaPipe capability |
-|------|---------------|------------------------|
-| **On-Device AI Chat** | Ask anything, get a streamed answer from an LLM running fully in-browser. Pick a small/medium/large model tier. | `@mediapipe/tasks-genai` (`LlmInference`) |
-| **Gesture Synth Instrument** | Play a real synthesizer with your hands — pitch, volume/filter, and instrument voice all controlled by gesture. Sing along and download the recording. | `@mediapipe/tasks-vision` (`GestureRecognizer`) + Tone.js |
-| **Air Canvas** | Draw in mid-air with a pinch gesture. Download your art as a PNG. | `@mediapipe/tasks-vision` (`HandLandmarker`) |
-| **Magic Mirror Face Filters** | Real-time AR filters (glasses, hats, and more) tracked to your face, drawn live with code. Snapshot or record and download. | `@mediapipe/tasks-vision` (`FaceLandmarker`) |
-| **Green Screen Studio** | Replace or blur your background with no physical green screen. Record and download the result. | `@mediapipe/tasks-vision` (`ImageSegmenter`) |
+| Demo | What it does | Downloadable result |
+|---|---|---|
+| **On-Device AI Chat** | Loads a local Gemma model through MediaPipe `LlmInference`, caches it, and streams responses with time-to-first-token reporting. | Generated text can be copied locally |
+| **Gesture Synth Instrument** | Maps hand position to scale-quantized notes, gestures to five synth voices, and optionally mixes microphone audio. | Mixed WebM audio recording |
+| **Air Canvas** | Uses thumb/index pinch detection to draw in mid-air with selectable colors. | PNG artwork |
+| **Magic Mirror** | Tracks the face and draws four procedural AR filters with canvas primitives. | PNG snapshot or WebM video |
+| **Green Screen Studio** | Segments the person locally and composites blur, solid, gradient, or uploaded-image backgrounds. | WebM composited video |
+
+## Architecture
+
+This is intentionally a **multi-page application**, not an SPA. Each demo has a separate HTML entry point, so navigating away allows the browser to reclaim its camera streams, WASM heap, and model runtime instead of keeping all five ML tasks alive together.
+
+```text
+/
+├── chat/          MediaPipe GenAI / LlmInference
+├── instrument/    GestureRecognizer + Tone.js
+├── canvas/        HandLandmarker
+├── filters/       FaceLandmarker
+└── greenscreen/   ImageSegmenter
+```
+
+Shared modules in `src/shared/` provide:
+
+- camera and microphone permission handling with specific error classification
+- separate Vision and GenAI `FilesetResolver` paths
+- byte-level model download progress and Cache API storage
+- WebGPU/WASM capability badges and a blocking WebGPU gate for Chat
+- monotonic timestamps for every video inference call
+- MediaPipe task and media-track cleanup on page teardown
+- MIME-type negotiation, WebM duration repair, recording preview, retake, and download
+- canvas helpers, local downloads, error boundaries, and detection-loop lifecycle
+
+MediaPipe WASM files are copied from `node_modules` into `public/wasm/` before development and production builds; no runtime WASM CDN is used.
 
 ## Tech Stack
 
-Vite (multi-page app, no framework) + Tailwind CSS v4 + `@mediapipe/tasks-vision` / `@mediapipe/tasks-genai` + Tone.js. Full rationale and version pins: [`.planning/research/STACK.md`](.planning/research/STACK.md).
+- Vite 8 multi-page build
+- Vanilla JavaScript with TypeScript `checkJs`
+- Tailwind CSS 4 through `@tailwindcss/vite`
+- `@mediapipe/tasks-vision` and `@mediapipe/tasks-genai`
+- Tone.js
+- `fix-webm-duration`
+- Cache API, WebGPU, Web Audio, Canvas, `MediaRecorder`, and `getUserMedia`
 
-## Project Structure
+## Run Locally
 
-```
-.
-├── docs/                  Product spec — read these first
-│   ├── PRD.md              What we're building and why
-│   ├── UI-SPEC.md           Design system + per-page layout spec
-│   └── FLOW.md              Sitemap and user journeys
-├── .planning/               GSD planning artifacts (source of truth for scope/sequencing)
-│   ├── PROJECT.md            Context, constraints, key decisions
-│   ├── REQUIREMENTS.md       44 testable v1 requirements
-│   ├── ROADMAP.md            6 phases: shared infra → 5 independent demos
-│   ├── research/             Stack/features/architecture/pitfalls research
-│   └── phases/01-.../06-.../ One folder per phase, each with its own resources/
-├── TODO.md                  Phase-by-phase execution checklist
-├── CLAUDE.md                 Claude Code / GSD workflow guide
-└── AGENTS.md                 Guide for any other AI coding agent working in this repo
-```
-
-## Project Status
-
-Everything above `TODO.md` exists as planning documentation only — no application code has been written yet. The build proceeds phase by phase per [`.planning/ROADMAP.md`](.planning/ROADMAP.md):
-
-1. **Shared Infrastructure** — hub page, camera/mic handling, model-loading + progress, backend/capability badges, recording→download flow, cleanup — required before any demo
-2. **Air Canvas**
-3. **Gesture Synth Instrument**
-4. **Magic Mirror Face Filters**
-5. **Green Screen Studio**
-6. **AI Chat**
-
-Phases 2-6 are mutually independent once Phase 1 is done. See [`TODO.md`](TODO.md) for the full technical checklist, or [`.planning/ROADMAP.md`](.planning/ROADMAP.md) for success criteria per phase.
-
-## Getting Started
-
-Not yet runnable — `package.json` / `vite.config.js` land in Phase 1. Once they exist:
+Requirements: Node.js 22+ and a current Chromium-based browser.
 
 ```bash
 npm install
-npm run dev       # local dev server
-npm run build && npm run preview   # production build (verify this too, not just dev)
+npm run dev
 ```
 
-## Principles
+Production verification:
 
-- **Zero server, always.** Every demo runs entirely in your browser. Model files are fetched once, cached locally (Cache API), and never uploaded anywhere.
-- **No dead ends.** Every demo produces something you can keep — a file on your disk, not just a screen you watch.
-- **Fail clearly.** Camera/mic denied, unsupported browser, model download failure — every case gets a specific, readable message, never a silent crash.
+```bash
+npm run verify
+npm run preview
+```
+
+`npm run verify` performs JavaScript type checking, unit tests, WASM copying, and a complete Vite production build.
+
+## Browser and Model Notes
+
+- The four vision demos can request a GPU delegate when WebGPU is available and otherwise use MediaPipe's CPU/WASM path.
+- The Chat demo is stricter: MediaPipe `LlmInference` requires WebGPU and blocks before downloading a model when no adapter is available.
+- The small and medium Gemma repositories are license-gated on Hugging Face. A 401/403 means the model license/access requirement must be handled before the browser can fetch that file. The UI reports this explicitly instead of failing silently.
+- Model files can be hundreds of megabytes or several gigabytes. They are cached locally after a successful first download.
+- Vercel headers are included for cross-origin isolation. A host that cannot set COOP/COEP headers may run a slower WASM path.
+
+## Project Documentation
+
+- [`docs/PRD.md`](docs/PRD.md) — product goals and scope
+- [`docs/UI-SPEC.md`](docs/UI-SPEC.md) — visual and interaction system
+- [`docs/FLOW.md`](docs/FLOW.md) — sitemap and user journeys
+- [`.planning/PROJECT.md`](.planning/PROJECT.md) — constraints and decisions
+- [`.planning/REQUIREMENTS.md`](.planning/REQUIREMENTS.md) — 44 v1 requirements
+- [`.planning/ROADMAP.md`](.planning/ROADMAP.md) — six implementation phases
+- [`TODO.md`](TODO.md) — execution and physical-browser QA checklist
+
+## Privacy
+
+Camera frames, microphone audio, prompts, model inference, and generated artifacts remain in the browser. The application has no account system, analytics endpoint, storage backend, or upload path.
