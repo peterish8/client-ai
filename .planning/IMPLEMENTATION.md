@@ -2,7 +2,7 @@
 
 **Updated:** 2026-07-27
 **Branch:** `main`
-**State:** v1 source implementation complete; physical-browser hardware QA pending.
+**State:** v1 source implementation complete and CI-verified; physical-browser hardware QA pending.
 
 ## What Landed
 
@@ -18,18 +18,15 @@ The roadmap was executed in dependency order: shared infrastructure first, follo
 | 6. AI Chat | Complete | `732f116` |
 | Build-safety cleanup | Complete | `d000e49` |
 | README/status documentation | Complete | `34feb46` |
+| Tone real-time audio-context type fix | Complete | `071be25` |
 
 ## Verification Performed
 
 - Every JavaScript source file passed `node --check` in the execution environment.
 - Shared unit tests pass with Node's test runner.
 - All six HTML entry points were parsed and checked for their expected module entry scripts.
-- The repository includes `npm run verify`, which performs `checkJs`, tests, WASM copying, and a Vite production build.
-- A GitHub Actions workflow runs the same verification command on pushes and pull requests.
-
-## GitHub Actions Verification
-
-A dedicated verification pull request runs the repository's real dependency installation, `checkJs`, unit tests, WASM copy, and production Vite build before the final verified state is merged back to `main`.
+- GitHub Actions CI run #11 completed successfully on commit `071be25`.
+- The green CI job installed real dependencies and passed `npm run verify`: TypeScript `checkJs`, unit tests, MediaPipe WASM copying, and the complete Vite production build.
 
 ## Verification Still Requiring Real Hardware
 
