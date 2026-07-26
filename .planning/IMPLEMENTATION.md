@@ -1,8 +1,8 @@
 # Implementation Status
 
 **Updated:** 2026-07-27
-**Branch:** `agent/two-hand-performance-mode` (target: `main`)
-**State:** Gesture Synth V2 source implementation complete and CI-verified; physical-browser musical QA pending.
+**Branch:** `main`
+**State:** Gesture Synth V2 source implementation complete, merged, and CI-verified; physical-browser musical QA pending.
 
 ## What Landed
 
@@ -41,8 +41,9 @@ The v1 roadmap was executed in dependency order: shared infrastructure first, fo
 
 - The pure performance-control test suite contains eight passing Node tests.
 - GitHub Actions CI run #14 installed the real dependency set and completed successfully on pull request #2.
+- Final pull-request CI run #17 also completed successfully on the exact merged source tree.
 - `npm run verify` passed: TypeScript `checkJs`, all Node tests, MediaPipe WASM copying, and the complete Vite production build.
-- Pull request #2 is mergeable with no source conflicts.
+- Pull request #2 was rebased and merged into `main` at `a08e2c8`.
 
 ## Verification Still Requiring Real Hardware
 
