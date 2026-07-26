@@ -1,0 +1,6 @@
+interface:
+  display_name: "Client Ai"
+  short_description: "Repo-specific patterns and workflows for client-ai"
+  default_prompt: "Use the client-ai repo skill to follow existing architecture, testing, and workflow conventions."
+policy:
+  allow_implicit_invocation: true
