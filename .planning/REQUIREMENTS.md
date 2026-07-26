@@ -93,22 +93,56 @@ Explicitly excluded. Documented to prevent scope creep.
 
 ## Traceability
 
-Which phases cover which requirements. Will be finalized by the roadmapper; draft mapping below reflects the intended 1-phase-shared-infra + 1-phase-per-showcase structure.
+Which phases cover which requirements. Finalized by the roadmapper against research's risk-ordered 6-phase structure (see `.planning/ROADMAP.md`).
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PLAT-01 through PLAT-09 | Phase 1 (Shared Infrastructure) | Pending |
-| CHAT-01 through CHAT-08 | Phase 2 (AI Chat) | Pending |
-| SYNTH-01 through SYNTH-09 | Phase 3 (Gesture Synth Instrument) | Pending |
-| CANVAS-01 through CANVAS-05 | Phase 4 (Air Canvas) | Pending |
-| FILT-01 through FILT-05 | Phase 5 (Magic Mirror Face Filters) | Pending |
-| GREEN-01 through GREEN-04 | Phase 6 (Green Screen Studio) | Pending |
+| PLAT-01 | Phase 1 (Shared Infrastructure) | Pending |
+| PLAT-02 | Phase 1 (Shared Infrastructure) | Pending |
+| PLAT-03 | Phase 1 (Shared Infrastructure) | Pending |
+| PLAT-04 | Phase 1 (Shared Infrastructure) | Pending |
+| PLAT-05 | Phase 1 (Shared Infrastructure) | Pending |
+| PLAT-06 | Phase 1 (Shared Infrastructure) | Pending |
+| PLAT-07 | Phase 1 (Shared Infrastructure) | Pending |
+| PLAT-08 | Phase 1 (Shared Infrastructure) | Pending |
+| PLAT-09 | Phase 1 (Shared Infrastructure) | Pending |
+| CANVAS-01 | Phase 2 (Air Canvas) | Pending |
+| CANVAS-02 | Phase 2 (Air Canvas) | Pending |
+| CANVAS-03 | Phase 2 (Air Canvas) | Pending |
+| CANVAS-04 | Phase 2 (Air Canvas) | Pending |
+| CANVAS-05 | Phase 2 (Air Canvas) | Pending |
+| SYNTH-01 | Phase 3 (Gesture Synth Instrument) | Pending |
+| SYNTH-02 | Phase 3 (Gesture Synth Instrument) | Pending |
+| SYNTH-03 | Phase 3 (Gesture Synth Instrument) | Pending |
+| SYNTH-04 | Phase 3 (Gesture Synth Instrument) | Pending |
+| SYNTH-05 | Phase 3 (Gesture Synth Instrument) | Pending |
+| SYNTH-06 | Phase 3 (Gesture Synth Instrument) | Pending |
+| SYNTH-07 | Phase 3 (Gesture Synth Instrument) | Pending |
+| SYNTH-08 | Phase 3 (Gesture Synth Instrument) | Pending |
+| SYNTH-09 | Phase 3 (Gesture Synth Instrument) | Pending |
+| FILT-01 | Phase 4 (Magic Mirror Face Filters) | Pending |
+| FILT-02 | Phase 4 (Magic Mirror Face Filters) | Pending |
+| FILT-03 | Phase 4 (Magic Mirror Face Filters) | Pending |
+| FILT-04 | Phase 4 (Magic Mirror Face Filters) | Pending |
+| FILT-05 | Phase 4 (Magic Mirror Face Filters) | Pending |
+| GREEN-01 | Phase 5 (Green Screen Studio) | Pending |
+| GREEN-02 | Phase 5 (Green Screen Studio) | Pending |
+| GREEN-03 | Phase 5 (Green Screen Studio) | Pending |
+| GREEN-04 | Phase 5 (Green Screen Studio) | Pending |
+| CHAT-01 | Phase 6 (AI Chat) | Pending |
+| CHAT-02 | Phase 6 (AI Chat) | Pending |
+| CHAT-03 | Phase 6 (AI Chat) | Pending |
+| CHAT-04 | Phase 6 (AI Chat) | Pending |
+| CHAT-05 | Phase 6 (AI Chat) | Pending |
+| CHAT-06 | Phase 6 (AI Chat) | Pending |
+| CHAT-07 | Phase 6 (AI Chat) | Pending |
+| CHAT-08 | Phase 6 (AI Chat) | Pending |
 
 **Coverage:**
 - v1 requirements: 44 total
-- Mapped to phases: 44 (draft — subject to roadmapper finalization)
+- Mapped to phases: 44 ✓
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-07-27*
-*Last updated: 2026-07-27 after initial definition*
+*Last updated: 2026-07-27 after roadmap creation — traceability finalized against ROADMAP.md's 6-phase structure (Chat is Phase 6, sequenced last per research's risk-ordering; Canvas/Synth/Filters/GreenScreen are Phases 2-5)*
