@@ -2,7 +2,7 @@
 
 Five creative, on-device AI demos in one multi-page Vite website. Every showcase runs in the visitor's browser with Google MediaPipe—no application backend, API key, account, telemetry, or server upload—and every demo produces something the visitor can keep.
 
-> **Status:** v1 implementation is complete on `main`. Automated source checks and unit tests are included. Final hardware QA still requires a real Chromium browser with camera, microphone, and WebGPU access.
+> **Status:** v1 and the Gesture Synth V2 source are complete and CI-verified. Final hardware QA still requires a real Chromium browser with camera, microphone, and WebGPU access; the expressive musical controls also need real-device feel tuning.
 
 ## The 5 Showcases
 
