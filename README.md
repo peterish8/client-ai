@@ -9,10 +9,35 @@ Five creative, on-device AI demos in one multi-page Vite website. Every showcase
 | Demo | What it does | Downloadable result |
 |---|---|---|
 | **On-Device AI Chat** | Loads a local Gemma model through MediaPipe `LlmInference`, caches it, and streams responses with time-to-first-token reporting. | Generated text can be copied locally |
-| **Gesture Synth Instrument** | Maps hand position to scale-quantized notes, gestures to five synth voices, and optionally mixes microphone audio. | Mixed WebM audio recording |
+| **Gesture Synth Instrument** | Uses a stable Sound Hand to select/play Bass, Violin-style, Pad, or Synth while the Expression Hand conducts cutoff, reverb, intensity, vibrato, risers, drops, and effect freeze. | Mixed WebM audio recording |
 | **Air Canvas** | Uses thumb/index pinch detection to draw in mid-air with selectable colors. | PNG artwork |
 | **Magic Mirror** | Tracks the face and draws four procedural AR filters with canvas primitives. | PNG snapshot or WebM video |
 | **Green Screen Studio** | Segments the person locally and composites blur, solid, gradient, or uploaded-image backgrounds. | WebM composited video |
+
+## Gesture Synth Performance Mode
+
+The instrument uses MediaPipe handedness rather than detection order, so each hand keeps a predictable role. The default Sound Hand is Right and can be swapped from the interface.
+
+### Sound Hand
+
+- Pinch thumb and index finger to gate a note; separate on/off thresholds prevent chatter.
+- Move vertically through a scale-quantised note range with note-boundary hysteresis.
+- Hold a preset gesture for 700 ms to switch intentionally:
+  - Victory → Synth
+  - Thumb Up → Violin-style
+  - Open Palm → Pad
+  - Closed Fist → Bass
+
+### Expression Hand
+
+- Raise/lower → low-pass cutoff and brightness.
+- Move sideways → delay/reverb space.
+- Open/close → intensity and gain.
+- Tilt the palm → vibrato depth.
+- Closed Fist → freeze the current expression.
+- Fast upward/downward sweeps → riser/drop accents with cooldown protection.
+
+The Tone.js signal path is `preset → expression gain → filter → vibrato → feedback delay → reverb → compressor → limiter → master`. All continuous parameters use short ramps, and the existing microphone mix, recording, preview, retake, and download flow remains available.
 
 ## Architecture
 
@@ -37,6 +62,8 @@ Shared modules in `src/shared/` provide:
 - MediaPipe task and media-track cleanup on page teardown
 - MIME-type negotiation, WebM duration repair, recording preview, retake, and download
 - canvas helpers, local downloads, error boundaries, and detection-loop lifecycle
+
+Gesture Synth additionally separates deterministic landmark/control logic in `src/instrument/performance-controls.js` from Tone.js routing in `src/instrument/performance-audio.js`.
 
 MediaPipe WASM files are copied from `node_modules` into `public/wasm/` before development and production builds; no runtime WASM CDN is used.
 
@@ -84,6 +111,8 @@ npm run preview
 - [`.planning/PROJECT.md`](.planning/PROJECT.md) — constraints and decisions
 - [`.planning/REQUIREMENTS.md`](.planning/REQUIREMENTS.md) — 44 v1 requirements
 - [`.planning/ROADMAP.md`](.planning/ROADMAP.md) — six implementation phases
+- [`docs/superpowers/specs/2026-07-27-two-hand-performance-mode-design.md`](docs/superpowers/specs/2026-07-27-two-hand-performance-mode-design.md) — approved expressive-instrument design
+- [`docs/superpowers/plans/2026-07-27-two-hand-performance-mode.md`](docs/superpowers/plans/2026-07-27-two-hand-performance-mode.md) — implementation and verification plan
 - [`TODO.md`](TODO.md) — execution and physical-browser QA checklist
 
 ## Privacy
