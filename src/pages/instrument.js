@@ -44,6 +44,10 @@ let lastVideoTime = -1;
 let micStream;
 let micSource;
 
+function getRealtimeAudioContext() {
+  return /** @type {AudioContext} */ (Tone.getContext().rawContext);
+}
+
 const flow = new RecordPreviewFlow({
   recordButton: $("#record-button"),
   stopButton: $("#stop-button"),
@@ -72,7 +76,7 @@ async function startAudio() {
     filter = new Tone.Filter(Number($("#filter").value), "lowpass");
     reverb = new Tone.Reverb({ decay: 2.5, wet: Number($("#reverb").value) });
     master = new Tone.Volume(Number($("#volume").value));
-    destination = Tone.getContext().rawContext.createMediaStreamDestination();
+    destination = getRealtimeAudioContext().createMediaStreamDestination();
     filter.connect(reverb);
     reverb.connect(master);
     master.connect(Tone.getDestination());
@@ -93,7 +97,7 @@ async function toggleMic() {
   try {
     if ($("#mic-toggle").checked) {
       micStream = await requestMedia({ audio: { echoCancellation: true }, video: false }, "Microphone");
-      micSource = Tone.getContext().rawContext.createMediaStreamSource(micStream);
+      micSource = getRealtimeAudioContext().createMediaStreamSource(micStream);
       micSource.connect(destination);
     } else {
       micSource?.disconnect();
