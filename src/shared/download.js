@@ -1,3 +1,5 @@
+let toastTimer = 0;
+
 export function downloadBlob(blob, filename) {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
@@ -26,7 +28,6 @@ export function showToast(message) {
   }
   toast.textContent = message;
   toast.classList.add("visible");
-  clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => toast.classList.remove("visible"), 2200);
+  clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => toast.classList.remove("visible"), 2200);
 }
-showToast.timer = 0;
