@@ -27,6 +27,10 @@ The roadmap was executed in dependency order: shared infrastructure first, follo
 - The repository includes `npm run verify`, which performs `checkJs`, tests, WASM copying, and a Vite production build.
 - A GitHub Actions workflow runs the same verification command on pushes and pull requests.
 
+## GitHub Actions Verification
+
+A dedicated verification pull request runs the repository's real dependency installation, `checkJs`, unit tests, WASM copy, and production Vite build before the final verified state is merged back to `main`.
+
 ## Verification Still Requiring Real Hardware
 
 The execution environment did not provide a browser with camera, microphone, GPU/WebGPU, or large-model network access. Therefore the following must be run on a normal laptop before calling the milestone fully validated:
