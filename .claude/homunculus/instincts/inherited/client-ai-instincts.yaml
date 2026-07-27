@@ -1,0 +1,464 @@
+# Instincts generated from https://github.com/peterish8/client-ai
+# Generated: 2026-07-26T21:59:11.972Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: client-ai-commit-conventional
+trigger: "when writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: https://github.com/peterish8/client-ai
+---
+
+# Client Ai Commit Conventional
+
+## Action
+
+Use conventional commit format with prefixes: docs, feat, test, style
+
+## Evidence
+
+- 10 commits analyzed
+- Detected conventional commit pattern
+- Examples: docs: design two-hand performance mode, test: define two-hand performance behaviour
+
+---
+id: client-ai-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/peterish8/client-ai
+---
+
+# Client Ai Commit Length
+
+## Action
+
+Keep commit messages concise (~42 characters)
+
+## Evidence
+
+- Average commit message length: 42 chars
+- Based on 10 commits
+
+---
+id: client-ai-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/peterish8/client-ai
+---
+
+# Client Ai Naming Files
+
+## Action
+
+Use camelCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: camelCase
+
+---
+id: client-ai-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/peterish8/client-ai
+---
+
+# Client Ai Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: client-ai-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/peterish8/client-ai
+---
+
+# Client Ai Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: client-ai-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/peterish8/client-ai
+---
+
+# Client Ai Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: client-ai-workflow-feature-development
+trigger: "when implementing a new feature"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/peterish8/client-ai
+---
+
+# Client Ai Workflow Feature Development
+
+## Action
+
+Follow the feature-development workflow:
+1. Add feature implementation
+2. Add tests for feature
+3. Update documentation
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~15x per month
+- Files: 
+
+---
+id: client-ai-instinct-file-naming
+trigger: "When creating a new file"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct File Naming
+
+## Action
+
+Name the file using camelCase
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.files
+
+---
+id: client-ai-instinct-function-naming
+trigger: "When defining a new function"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Function Naming
+
+## Action
+
+Name the function using camelCase
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.functions
+
+---
+id: client-ai-instinct-class-naming
+trigger: "When defining a new class"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Class Naming
+
+## Action
+
+Name the class using PascalCase
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.classes
+
+---
+id: client-ai-instinct-constant-naming
+trigger: "When declaring a constant"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Constant Naming
+
+## Action
+
+Name the constant using SCREAMING_SNAKE_CASE
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.constants
+
+---
+id: client-ai-instinct-import-style
+trigger: "When importing modules"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Import Style
+
+## Action
+
+Use relative import paths
+
+## Evidence
+
+- Pattern in codeStyle.importStyle
+
+---
+id: client-ai-instinct-export-style
+trigger: "When exporting modules or functions"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in codeStyle.exportStyle
+
+---
+id: client-ai-instinct-error-boundary
+trigger: "When handling errors in components"
+confidence: 0.8
+domain: architecture
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Error Boundary
+
+## Action
+
+Implement error boundaries instead of global error handlers
+
+## Evidence
+
+- Pattern in errorHandling.errorBoundaries
+
+---
+id: client-ai-instinct-test-location
+trigger: "When adding new tests"
+confidence: 0.9
+domain: testing
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Test Location
+
+## Action
+
+Place test files in the separate 'tests' folder
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation
+
+---
+id: client-ai-instinct-test-prefix
+trigger: "When writing a commit for a new test"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Test Prefix
+
+## Action
+
+Prefix the commit message with 'test:'
+
+## Evidence
+
+- Seen in commit 'test: define two-hand performance behaviour'
+- Pattern in commits.prefixes
+
+---
+id: client-ai-instinct-docs-prefix
+trigger: "When writing a commit for documentation changes"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Docs Prefix
+
+## Action
+
+Prefix the commit message with 'docs:'
+
+## Evidence
+
+- Seen in commit 'docs: design two-hand performance mode'
+- Pattern in commits.prefixes
+
+---
+id: client-ai-instinct-feat-prefix
+trigger: "When writing a commit for a new feature"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Feat Prefix
+
+## Action
+
+Prefix the commit message with 'feat:'
+
+## Evidence
+
+- Seen in commit 'feat: add gesture performance control engine'
+- Pattern in commits.prefixes
+
+---
+id: client-ai-instinct-style-prefix
+trigger: "When writing a commit for style changes"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Style Prefix
+
+## Action
+
+Prefix the commit message with 'style:'
+
+## Evidence
+
+- Seen in commit 'style: add gesture performance HUD'
+- Pattern in commits.prefixes
+
+---
+id: client-ai-instinct-commit-length
+trigger: "When writing a commit message"
+confidence: 0.7
+domain: git
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Commit Length
+
+## Action
+
+Keep the commit message concise (around 42 characters on average)
+
+## Evidence
+
+- Pattern in commits.averageLength
+- Examples in commits.examples
+
+---
+id: client-ai-instinct-feature-workflow-impl
+trigger: "When starting a new feature"
+confidence: 0.8
+domain: workflow
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Feature Workflow Impl
+
+## Action
+
+First, implement the feature in the relevant src/instrument or src/pages file
+
+## Evidence
+
+- Workflow feature-development
+- Example files in workflow
+
+---
+id: client-ai-instinct-feature-workflow-test
+trigger: "After implementing a feature"
+confidence: 0.8
+domain: workflow
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Feature Workflow Test
+
+## Action
+
+Add corresponding tests in the 'tests' folder
+
+## Evidence
+
+- Workflow feature-development
+- Pattern in architecture.folderStructure.testLocation
+
+---
+id: client-ai-instinct-feature-workflow-docs
+trigger: "After implementing and testing a feature"
+confidence: 0.8
+domain: workflow
+source: repo-analysis
+source_repo: peterish8/client-ai
+---
+
+# Client Ai Instinct Feature Workflow Docs
+
+## Action
+
+Update the documentation to reflect the new feature
+
+## Evidence
+
+- Workflow feature-development
+- Pattern in commits.prefixes
+- Example in workflow
+
