@@ -1,4 +1,5 @@
 node_modules/
+public/wasm/
 dist/
 .env*
 !.env.example
